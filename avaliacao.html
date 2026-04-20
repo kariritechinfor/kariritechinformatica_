@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="robots" content="noindex"/>
+  <title>Avalie nosso Atendimento – KaririTech</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root{
+      --bg:#080505; --bg2:#0f0606; --card:#130606;
+      --bdr:rgba(180,0,40,.2); --red:#cc0022; --red2:#e8001e; --wine:#7b0020;
+      --txt:#f2eeee; --muted:#9e8888;
+      --gold:#fbbc04; --gold2:#f9a800;
+      --green:#25d366; --green2:#128c7e;
+      --fh:'Syne',sans-serif; --fb:'DM Sans',sans-serif;
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--txt);font-family:var(--fb);min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+
+    /* noise */
+    body::before{content:'';position:fixed;inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.025'/%3E%3C/svg%3E");
+      pointer-events:none;z-index:0;opacity:.6}
+
+    /* glow bg */
+    body::after{content:'';position:fixed;inset:0;
+      background:radial-gradient(ellipse 70% 60% at 50% 30%,rgba(123,0,32,.16) 0%,transparent 65%);
+      pointer-events:none;z-index:0}
+
+    /* HEADER */
+    header{position:relative;z-index:10;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bdr);background:rgba(8,5,5,.85);backdrop-filter:blur(20px)}
+    .logo{display:flex;align-items:center;gap:10px;font-family:var(--fh);font-weight:800;font-size:1.2rem;color:var(--txt);text-decoration:none}
+    .logo-ic{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,var(--red),var(--wine));display:flex;align-items:center;justify-content:center;font-size:.95rem;color:#fff}
+    .logo span{color:var(--red2)}
+    .back{color:var(--muted);text-decoration:none;font-size:.85rem;display:flex;align-items:center;gap:6px;transition:.2s}
+    .back:hover{color:var(--txt)}
+
+    /* MAIN CARD */
+    main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px;position:relative;z-index:5}
+    .card{background:var(--card);border:1px solid var(--bdr);border-radius:22px;padding:48px 44px;max-width:580px;width:100%;text-align:center;position:relative;overflow:hidden}
+    .card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--red),var(--wine),var(--gold))}
+
+    /* LOGO MARCA */
+    .brand{margin-bottom:28px}
+    .brand-logo{width:80px;height:80px;border-radius:20px;background:linear-gradient(135deg,var(--red),var(--wine));display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:2.2rem;color:#fff;box-shadow:0 8px 28px rgba(204,0,34,.35)}
+    .brand h1{font-family:var(--fh);font-size:1.4rem;font-weight:800;color:var(--txt)}
+    .brand h1 span{color:var(--red2)}
+    .brand p{color:var(--muted);font-size:.82rem;margin-top:3px}
+
+    /* SCREENS */
+    .screen{display:none}
+    .screen.active{display:block}
+
+    /* STEP 1 – STARS */
+    .q-title{font-family:var(--fh);font-size:1.35rem;font-weight:800;margin-bottom:8px;line-height:1.2}
+    .q-sub{color:var(--muted);font-size:.92rem;margin-bottom:34px;line-height:1.6}
+    .stars{display:flex;justify-content:center;gap:10px;margin-bottom:18px}
+    .star{font-size:2.6rem;cursor:pointer;color:#333;transition:transform .18s,color .18s;line-height:1;user-select:none}
+    .star:hover,.star.lit,.star.hover{color:var(--gold)}
+    .star:hover{transform:scale(1.18)}
+    .star.lit{animation:pop .22s ease}
+    @keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.28)}100%{transform:scale(1)}}
+    .star-label{font-family:var(--fh);font-size:.88rem;font-weight:700;color:var(--muted);height:22px;transition:.2s;margin-bottom:28px}
+
+    /* STEP 2a – GOOGLE (4-5 stars) */
+    .g-box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:28px 24px;margin-bottom:24px}
+    .g-stars-disp{font-size:1.6rem;margin-bottom:10px;letter-spacing:3px}
+    .g-box h2{font-family:var(--fh);font-size:1.2rem;font-weight:800;margin-bottom:8px}
+    .g-box p{color:var(--muted);font-size:.9rem;line-height:1.6;margin-bottom:22px}
+    .g-btn{display:inline-flex;align-items:center;gap:10px;background:#fff;color:#111;font-family:var(--fh);font-weight:800;font-size:1rem;padding:16px 34px;border-radius:100px;text-decoration:none;transition:.22s;box-shadow:0 6px 24px rgba(0,0,0,.25);letter-spacing:.03em;margin-bottom:12px}
+    .g-btn:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 10px 32px rgba(0,0,0,.35)}
+    .g-btn img{width:22px;height:22px}
+    .g-skip{color:var(--muted);font-size:.8rem;cursor:pointer;background:none;border:none;text-decoration:underline;text-underline-offset:3px;transition:.18s;margin-top:4px}
+    .g-skip:hover{color:var(--txt)}
+    .confetti-wrap{position:absolute;inset:0;pointer-events:none;overflow:hidden;border-radius:22px}
+    .confetti-p{position:absolute;width:8px;height:8px;border-radius:2px;animation:fall linear forwards}
+    @keyframes fall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(110%) rotate(720deg);opacity:0}}
+
+    /* STEP 2b – INTERNAL (1-3 stars) */
+    .fb-title{font-family:var(--fh);font-size:1.2rem;font-weight:800;margin-bottom:6px}
+    .fb-sub{color:var(--muted);font-size:.88rem;line-height:1.6;margin-bottom:26px}
+    .fb-tags{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:22px}
+    .fbt{background:rgba(180,0,30,.1);color:var(--red2);border:1px solid rgba(204,0,34,.2);font-size:.8rem;font-weight:700;padding:7px 16px;border-radius:100px;cursor:pointer;transition:.2s;letter-spacing:.04em;font-family:var(--fh)}
+    .fbt:hover,.fbt.sel{background:rgba(204,0,34,.22);border-color:rgba(204,0,34,.45);color:#fff}
+    .fg{margin-bottom:16px;text-align:left}
+    .fg label{display:block;font-size:.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+    .fg input,.fg textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:9px;padding:12px 14px;color:var(--txt);font-family:var(--fb);font-size:.9rem;outline:none;transition:.2s}
+    .fg input:focus,.fg textarea:focus{border-color:rgba(204,0,34,.42);background:rgba(180,0,30,.06);box-shadow:0 0 0 3px rgba(180,0,30,.09)}
+    .fg textarea{resize:vertical;min-height:90px}
+    .fg input::placeholder,.fg textarea::placeholder{color:var(--muted)}
+    .send-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:9px;background:var(--red);color:#fff;font-family:var(--fh);font-weight:700;font-size:.92rem;padding:14px;border-radius:100px;border:none;cursor:pointer;transition:.22s;margin-top:4px}
+    .send-btn:hover{background:var(--red2);transform:translateY(-1px)}
+
+    /* STEP 3 – THANK YOU */
+    .ty-icon{width:72px;height:72px;border-radius:50%;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;font-size:2rem}
+    .ty-icon.good{background:rgba(251,188,4,.12);border:2px solid rgba(251,188,4,.3);color:var(--gold)}
+    .ty-icon.ok{background:rgba(37,211,102,.1);border:2px solid rgba(37,211,102,.25);color:var(--green)}
+    .ty h2{font-family:var(--fh);font-size:1.5rem;font-weight:800;margin-bottom:10px}
+    .ty p{color:var(--muted);font-size:.92rem;line-height:1.7;margin-bottom:28px}
+    .ty-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .wa-ty{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--green),var(--green2));color:#fff;font-family:var(--fh);font-weight:700;font-size:.88rem;padding:13px 26px;border-radius:100px;text-decoration:none;transition:.22s;box-shadow:0 4px 18px rgba(37,211,102,.3)}
+    .wa-ty:hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(37,211,102,.4)}
+    .home-ty{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--red2);border:1.5px solid var(--red);font-family:var(--fh);font-weight:700;font-size:.88rem;padding:13px 26px;border-radius:100px;text-decoration:none;transition:.22s}
+    .home-ty:hover{background:rgba(204,0,34,.09)}
+
+    /* WA FLOAT */
+    #wa{position:fixed;bottom:24px;right:24px;z-index:99}
+    .wab{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#25d366,#128c7e);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.5rem;text-decoration:none;box-shadow:0 4px 18px rgba(37,211,102,.45);transition:.22s;position:relative}
+    .wab:hover{transform:scale(1.08)}
+    .wping{position:absolute;top:2px;right:2px;width:12px;height:12px;border-radius:50%;background:#ff3b3b;border:2px solid var(--bg);animation:wg 2s infinite}
+    @keyframes wg{0%{box-shadow:0 0 0 0 rgba(255,59,59,.6)}70%{box-shadow:0 0 0 7px rgba(255,59,59,0)}100%{box-shadow:0 0 0 0 rgba(255,59,59,0)}}
+
+    footer{position:relative;z-index:5;text-align:center;padding:20px;border-top:1px solid var(--bdr);color:var(--muted);font-size:.78rem}
+    footer a{color:var(--red2);text-decoration:none}
+
+    @media(max-width:520px){.card{padding:36px 22px}.star{font-size:2.2rem}}
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">
+    <div class="logo-ic"><i class="fas fa-microchip"></i></div>
+    Kariri<span>Tech</span>
+  </a>
+  <a href="index.html" class="back"><i class="fas fa-arrow-left"></i> Voltar ao site</a>
+</header>
+
+<main>
+  <div class="card" id="mainCard">
+    <div class="confetti-wrap" id="confettiWrap"></div>
+
+    <!-- BRAND / LOGO MARCA -->
+    <div class="brand">
+      <div class="brand-logo"><i class="fas fa-microchip"></i></div>
+      <h1>Kariri<span>Tech</span> Informática</h1>
+      <p>Juazeiro do Norte – CE</p>
+    </div>
+
+    <!-- ── SCREEN 1: ESTRELAS ── -->
+    <div class="screen active" id="s1">
+      <div class="q-title">Como foi o nosso atendimento?</div>
+      <div class="q-sub">Sua avaliação é muito importante para nós e leva menos de 1 minuto! ⚡</div>
+
+      <div class="stars" id="starsRow">
+        <span class="star" data-v="1">★</span>
+        <span class="star" data-v="2">★</span>
+        <span class="star" data-v="3">★</span>
+        <span class="star" data-v="4">★</span>
+        <span class="star" data-v="5">★</span>
+      </div>
+      <div class="star-label" id="starLabel">Clique nas estrelas para avaliar</div>
+    </div>
+
+    <!-- ── SCREEN 2a: GOOGLE (4-5 ⭐) ── -->
+    <div class="screen" id="s2g">
+      <div class="g-box">
+        <div class="g-stars-disp" id="gStarsDisp">★★★★★</div>
+        <h2>Uhuul! Que ótimo! 🎉</h2>
+        <p>Ficamos muito felizes que você gostou! Que tal compartilhar sua experiência no <strong>Google</strong>? Isso nos ajuda muito a ser encontrados por mais clientes.</p>
+        <a id="gReviewBtn" href="#" target="_blank" rel="noopener" class="g-btn">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/120px-Google_%22G%22_logo.svg.png" alt="Google"/>
+          Avaliar no Google
+        </a><br/>
+        <button class="g-skip" onclick="showThankYou('good',false)">Pular esta etapa</button>
+      </div>
+    </div>
+
+    <!-- ── SCREEN 2b: FEEDBACK INTERNO (1-3 ⭐) ── -->
+    <div class="screen" id="s2f">
+      <div class="fb-title">Nos conta o que aconteceu 😔</div>
+      <div class="fb-sub">Sua opinião nos ajuda a melhorar. O que podemos fazer melhor?</div>
+
+      <div class="fb-tags" id="fbTags">
+        <button class="fbt" onclick="toggleTag(this)">⏱ Demora no atendimento</button>
+        <button class="fbt" onclick="toggleTag(this)">💰 Preço elevado</button>
+        <button class="fbt" onclick="toggleTag(this)">🔧 Problema não resolvido</button>
+        <button class="fbt" onclick="toggleTag(this)">😶 Atendimento frio</button>
+        <button class="fbt" onclick="toggleTag(this)">📦 Peça demorou</button>
+        <button class="fbt" onclick="toggleTag(this)">📞 Difícil de contatar</button>
+      </div>
+
+      <div class="fg"><label>Seu nome (opcional)</label><input type="text" id="fbName" placeholder="Como podemos te chamar?"/></div>
+      <div class="fg"><label>Conte com mais detalhes</label><textarea id="fbMsg" placeholder="O que aconteceu? Como poderíamos ter feito melhor?"></textarea></div>
+      <div class="fg"><label>WhatsApp (para retornarmos)</label><input type="tel" id="fbPhone" placeholder="(88) 9 0000-0000"/></div>
+
+      <button class="send-btn" onclick="sendFeedback()"><i class="fas fa-paper-plane"></i> Enviar Feedback</button>
+    </div>
+
+    <!-- ── SCREEN 3: OBRIGADO ── -->
+    <div class="screen" id="s3">
+      <div class="ty" id="tyContent">
+        <!-- filled by JS -->
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- WA FLOAT -->
+<div id="wa">
+  <a href="https://wa.me/5588999999999" target="_blank" class="wab" title="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+    <span class="wping"></span>
+  </a>
+</div>
+
+<footer>
+  <a href="index.html">KaririTech Informática</a> &nbsp;·&nbsp; Juazeiro do Norte – CE &nbsp;·&nbsp; <a href="https://wa.me/5588999999999">(88) 9 9999‑9999</a>
+</footer>
+
+<script>
+// ── CONFIG ──────────────────────────────────────────
+// SUBSTITUA pela URL real de avaliação do Google:
+// Acesse: https://business.google.com → seu perfil → "Pedir avaliações" → copie o link
+var GOOGLE_REVIEW_URL = 'https://search.google.com/local/writereview?placeid=SEU_PLACE_ID_AQUI';
+// ────────────────────────────────────────────────────
+
+var rating = 0;
+var labels = ['','Muito ruim 😞','Ruim 😕','Regular 😐','Bom 😊','Excelente! 🤩'];
+var gStarText = ['','★','★★','★★★','★★★★','★★★★★'];
+var selectedTags = [];
+
+// Stars
+var stars = document.querySelectorAll('.star');
+stars.forEach(function(s){
+  s.addEventListener('mouseenter', function(){
+    var v = parseInt(s.getAttribute('data-v'));
+    stars.forEach(function(x){ x.classList.toggle('hover', parseInt(x.getAttribute('data-v')) <= v); });
+    document.getElementById('starLabel').textContent = labels[v];
+  });
+  s.addEventListener('mouseleave', function(){
+    stars.forEach(function(x){ x.classList.remove('hover'); });
+    document.getElementById('starLabel').textContent = rating > 0 ? labels[rating] : 'Clique nas estrelas para avaliar';
+  });
+  s.addEventListener('click', function(){
+    rating = parseInt(s.getAttribute('data-v'));
+    stars.forEach(function(x){
+      var v2 = parseInt(x.getAttribute('data-v'));
+      x.classList.toggle('lit', v2 <= rating);
+      x.classList.remove('hover');
+    });
+    document.getElementById('starLabel').textContent = labels[rating];
+    setTimeout(function(){ nextStep(); }, 480);
+  });
+});
+
+function show(id){ document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); }); document.getElementById(id).classList.add('active'); }
+
+function nextStep(){
+  if(rating >= 4){
+    document.getElementById('gStarsDisp').textContent = gStarText[rating];
+    document.getElementById('gReviewBtn').href = GOOGLE_REVIEW_URL;
+    launchConfetti();
+    show('s2g');
+    // auto-open Google after 1.8s on desktop
+    setTimeout(function(){
+      if(window.innerWidth > 600) window.open(GOOGLE_REVIEW_URL,'_blank');
+    }, 1800);
+    // after they open Google, show thank you after 4s
+    document.getElementById('gReviewBtn').addEventListener('click', function(){
+      setTimeout(function(){ showThankYou('good', true); }, 1200);
+    });
+  } else {
+    show('s2f');
+  }
+}
+
+function showThankYou(type, wentGoogle){
+  var html = '';
+  if(type === 'good'){
+    html = '<div class="ty-icon good"><i class="fas fa-star"></i></div>'
+      + '<h2>Obrigado pela avaliação! 🙏</h2>'
+      + '<p>Sua opinião é muito importante para nós. Continuaremos trabalhando para oferecer o melhor atendimento em tecnologia no Cariri.</p>'
+      + (wentGoogle ? '<p style="color:var(--gold);font-weight:600">✅ Avaliação no Google registrada!</p>' : '')
+      + '<div class="ty-btns">'
+      + '<a href="https://wa.me/5588999999999" target="_blank" class="wa-ty"><i class="fab fa-whatsapp"></i> Falar no WhatsApp</a>'
+      + '<a href="index.html" class="home-ty"><i class="fas fa-home"></i> Ir ao site</a>'
+      + '</div>';
+  } else {
+    html = '<div class="ty-icon ok"><i class="fas fa-heart"></i></div>'
+      + '<h2>Recebemos seu feedback!</h2>'
+      + '<p>Agradecemos sua sinceridade. Vamos analisar seu retorno e trabalhar para melhorar. Se quiser, podemos entrar em contato para resolver qualquer problema.</p>'
+      + '<div class="ty-btns">'
+      + '<a href="https://wa.me/5588999999999?text=Ol%C3%A1%2C%20deixei%20um%20feedback%20e%20gostaria%20de%20conversar" target="_blank" class="wa-ty"><i class="fab fa-whatsapp"></i> Conversar no WhatsApp</a>'
+      + '<a href="index.html" class="home-ty"><i class="fas fa-home"></i> Ir ao site</a>'
+      + '</div>';
+  }
+  document.getElementById('tyContent').innerHTML = html;
+  show('s3');
+}
+
+function toggleTag(el){ el.classList.toggle('sel'); }
+
+function sendFeedback(){
+  var tags = [];
+  document.querySelectorAll('.fbt.sel').forEach(function(t){ tags.push(t.textContent.trim()); });
+  var name = document.getElementById('fbName').value.trim();
+  var msg  = document.getElementById('fbMsg').value.trim();
+  var phone= document.getElementById('fbPhone').value.trim();
+
+  // Build WhatsApp message to business (optional direct notification)
+  var waMsg = '⚠️ *Feedback KaririTech*\n'
+    + '⭐ Nota: ' + rating + '/5\n'
+    + (tags.length ? '🏷 Pontos: ' + tags.join(', ') + '\n' : '')
+    + (name  ? '👤 Nome: ' + name + '\n' : '')
+    + (phone ? '📱 Tel: ' + phone + '\n' : '')
+    + (msg   ? '💬 Msg: ' + msg : '');
+  // Open WhatsApp silently (background) — comment out if not desired
+  window.open('https://wa.me/5588999999999?text=' + encodeURIComponent(waMsg), '_blank');
+
+  showThankYou('ok', false);
+}
+
+// Confetti
+function launchConfetti(){
+  var wrap = document.getElementById('confettiWrap');
+  var colors = ['#cc0022','#e8001e','#fbbc04','#ffffff','#7b0020','#ff6b6b'];
+  for(var i=0; i<36; i++){
+    var p = document.createElement('div');
+    p.className = 'confetti-p';
+    p.style.cssText = 'left:'+Math.random()*100+'%;top:-10px;background:'+colors[Math.floor(Math.random()*colors.length)]+';width:'+(6+Math.random()*6)+'px;height:'+(6+Math.random()*6)+'px;animation-duration:'+(1.2+Math.random()*1.6)+'s;animation-delay:'+Math.random()*0.6+'s;border-radius:'+(Math.random()>0.5?'50%':'3px')';
+    wrap.appendChild(p);
+    setTimeout(function(pp){ pp.remove(); }, 3500, p);
+  }
+}
+
+// Phone mask
+document.getElementById('fbPhone').addEventListener('input',function(){
+  var v=this.value.replace(/\D/g,'').substring(0,11);
+  if(v.length>7)v=v.replace(/^(\d{2})(\d{1})(\d{4})(\d{0,4})$/,'($1) $2 $3-$4');
+  else if(v.length>2)v=v.replace(/^(\d{2})(\d+)$/,'($1) $2');
+  this.value=v;
+});
+</script>
+</body>
+</html>

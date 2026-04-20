@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="KaririTech Informática – Assistência técnica, redes, segurança e soluções em TI para o Cariri."/>
+  <title>KaririTech Informática</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    /* ── TOKENS ── */
+    :root{
+      --bg:#080505; --bg2:#0e0606; --bg3:#140808; --card:#0f0404;
+      --bdr:rgba(180,0,40,.18); --bdr2:rgba(180,0,40,.32);
+      --red:#cc0022; --red2:#e8001e; --wine:#7b0020; --wine2:#4a0014;
+      --txt:#f2eeee; --muted:#9e8888; --white:#ffffff;
+      --r:14px; --nh:68px;
+      --fh:'Syne',sans-serif; --fb:'DM Sans',sans-serif;
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--txt);font-family:var(--fb);line-height:1.6;overflow-x:hidden}
+    ::-webkit-scrollbar{width:5px}
+    ::-webkit-scrollbar-track{background:var(--bg)}
+    ::-webkit-scrollbar-thumb{background:var(--wine);border-radius:3px}
+
+    /* noise */
+    body::before{content:'';position:fixed;inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.025'/%3E%3C/svg%3E");
+      pointer-events:none;z-index:0;opacity:.6}
+
+    /* ── UTILS ── */
+    .c{max-width:1160px;margin:0 auto;padding:0 24px}
+    .sec{padding:92px 0;position:relative;z-index:1}
+    .badge{display:inline-flex;align-items:center;gap:8px;background:rgba(180,0,30,.1);border:1px solid var(--bdr);color:var(--red2);font-family:var(--fh);font-size:.72rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;padding:5px 15px;border-radius:100px;margin-bottom:18px}
+    .badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--red2);animation:dot 2s infinite}
+    @keyframes dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(1.5)}}
+    .htitle{font-family:var(--fh);font-size:clamp(1.9rem,3.8vw,2.9rem);font-weight:800;line-height:1.1;margin-bottom:14px}
+    .htitle span{color:var(--red2)}
+    .hsub{color:var(--muted);font-size:1rem;max-width:520px;margin-bottom:48px}
+    .bar{width:56px;height:3px;border-radius:2px;background:linear-gradient(90deg,var(--red),var(--wine));margin-bottom:18px}
+    .btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--fh);font-weight:700;font-size:.85rem;letter-spacing:.04em;padding:13px 28px;border-radius:100px;cursor:pointer;border:none;text-decoration:none;transition:.22s ease}
+    .bp{background:var(--red);color:#fff}.bp:hover{background:var(--red2);transform:translateY(-2px);box-shadow:0 10px 28px rgba(204,0,34,.32)}
+    .bo{background:transparent;color:var(--red2);border:1.5px solid var(--red)}.bo:hover{background:rgba(204,0,34,.09);transform:translateY(-2px)}
+
+    .fu{opacity:0;transform:translateY(26px);transition:opacity .55s ease,transform .55s ease}
+    .fu.vis{opacity:1;transform:none}
+
+    /* ── NAV ── */
+    nav{position:fixed;top:0;left:0;right:0;z-index:999;height:var(--nh);display:flex;align-items:center;background:rgba(8,5,5,.88);backdrop-filter:blur(22px);border-bottom:1px solid var(--bdr)}
+    nav .c{display:flex;align-items:center;justify-content:space-between;width:100%}
+    .logo{display:flex;align-items:center;gap:10px;font-family:var(--fh);font-weight:800;font-size:1.25rem;color:var(--white);text-decoration:none}
+    .logo-ic{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--red),var(--wine));display:flex;align-items:center;justify-content:center;font-size:1rem;color:#fff}
+    .logo span{color:var(--red2)}
+    .nl{display:flex;align-items:center;gap:6px;list-style:none}
+    .nl a{color:var(--muted);font-size:.88rem;font-weight:500;text-decoration:none;padding:7px 14px;border-radius:8px;transition:.18s}
+    .nl a:hover{color:var(--white);background:rgba(255,255,255,.06)}
+    .nl a.on{color:var(--red2)}
+    .hbg{display:none;background:none;border:none;cursor:pointer;padding:8px}
+    .hbg span{display:block;width:22px;height:2px;background:var(--txt);margin:5px 0;border-radius:2px;transition:.28s}
+    .mm{display:none;position:fixed;top:var(--nh);left:0;right:0;background:rgba(8,5,5,.97);backdrop-filter:blur(22px);border-bottom:1px solid var(--bdr);padding:18px 22px 24px;z-index:998;flex-direction:column;gap:3px}
+    .mm.open{display:flex}
+    .mm a{color:var(--muted);font-size:.97rem;text-decoration:none;padding:11px 14px;border-radius:8px;transition:.18s}
+    .mm a:hover{color:var(--white);background:rgba(255,255,255,.06)}
+    .mm .btn{margin-top:10px;justify-content:center}
+
+    /* ── HERO ── */
+    #home{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;overflow:hidden;padding-top:var(--nh);z-index:1}
+    .hbg-fx{position:absolute;inset:0;overflow:hidden}
+    .hbg-fx::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 65% at 50% 42%,rgba(123,0,32,.2) 0%,transparent 62%),radial-gradient(ellipse 50% 40% at 82% 70%,rgba(204,0,34,.1) 0%,transparent 52%)}
+    .hbg-fx::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(180,0,30,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(180,0,30,.045) 1px,transparent 1px);background-size:58px 58px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 0%,transparent 100%)}
+
+    .cr{position:relative;width:100%;overflow:hidden;z-index:2}
+    .crt{display:flex;transition:transform .68s cubic-bezier(.77,0,.175,1)}
+    .cs{min-width:100%;padding:90px 24px 76px;display:flex;align-items:center}
+    .sc{max-width:660px}
+    .sc h1{font-family:var(--fh);font-weight:800;font-size:clamp(2.2rem,5vw,4rem);line-height:1.06;margin-bottom:20px}
+    .sc h1 span{color:var(--red2)}
+    .sc p{color:var(--muted);font-size:1.05rem;line-height:1.72;max-width:510px;margin-bottom:32px}
+    .sa{display:flex;gap:14px;flex-wrap:wrap}
+    .cctl{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;gap:9px;z-index:3}
+    .cdot{width:7px;height:7px;border-radius:50%;background:var(--muted);border:none;cursor:pointer;transition:.28s;padding:0}
+    .cdot.on{background:var(--red2);width:26px;border-radius:4px}
+    .carr{position:absolute;top:50%;transform:translateY(-50%);background:rgba(180,0,30,.12);border:1px solid var(--bdr);color:var(--red2);width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;transition:.2s;z-index:3}
+    .carr:hover{background:rgba(180,0,30,.26)}
+    .carr.prev{left:20px}.carr.nxt{right:20px}
+
+    .hfc{position:absolute;right:4%;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:14px;z-index:3;pointer-events:none}
+    .fc{background:rgba(15,4,4,.82);backdrop-filter:blur(14px);border:1px solid var(--bdr);border-radius:var(--r);padding:15px 20px;min-width:190px;animation:fly 4s ease-in-out infinite}
+    .fc:nth-child(2){animation-delay:1.4s}.fc:nth-child(3){animation-delay:2.8s}
+    @keyframes fly{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+    .fc .fl{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px}
+    .fc .fv{font-family:var(--fh);font-size:1.35rem;font-weight:800;color:var(--white)}
+    .fc .fs{font-size:.78rem;color:var(--red2);margin-top:2px}
+    @media(max-width:900px){.hfc{display:none}}
+
+    /* ── SOBRE ── */
+    #sobre{background:var(--bg2)}
+    #sobre::before{content:'';position:absolute;top:-180px;right:-180px;width:460px;height:460px;border-radius:50%;background:radial-gradient(circle,rgba(123,0,32,.09) 0%,transparent 70%);pointer-events:none}
+    .ag{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+    .abox{background:linear-gradient(135deg,var(--bg3),rgba(123,0,32,.1));border:1px solid var(--bdr);border-radius:22px;padding:42px;display:flex;align-items:center;justify-content:center;min-height:360px}
+    .aig{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;width:100%}
+    .aic{background:rgba(180,0,30,.07);border:1px solid var(--bdr);border-radius:11px;padding:18px 12px;text-align:center;transition:.25s;cursor:default}
+    .aic:hover{background:rgba(180,0,30,.14);border-color:rgba(204,0,34,.28);transform:translateY(-4px)}
+    .aic i{font-size:1.5rem;color:var(--red2);margin-bottom:7px;display:block}
+    .aic p{font-size:.74rem;color:var(--muted);font-weight:500;margin:0}
+    .ast{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:36px}
+    .as{text-align:center;padding:18px 12px;background:rgba(180,0,30,.07);border:1px solid var(--bdr);border-radius:11px}
+    .as .n{font-family:var(--fh);font-size:1.7rem;font-weight:800;color:var(--red2)}
+    .as .l{font-size:.76rem;color:var(--muted);margin-top:3px}
+    @media(max-width:800px){.ag{grid-template-columns:1fr;gap:36px}}
+
+    /* ── SERVIÇOS ── */
+    .sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(272px,1fr));gap:20px}
+    .scard{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:32px 26px;transition:.26s;position:relative;overflow:hidden;cursor:default}
+    .scard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--red),var(--wine));opacity:0;transition:.26s}
+    .scard:hover{border-color:rgba(204,0,34,.28);transform:translateY(-5px);box-shadow:0 18px 44px rgba(180,0,30,.09)}
+    .scard:hover::before{opacity:1}
+    .si{width:52px;height:52px;border-radius:13px;background:rgba(180,0,30,.1);border:1px solid var(--bdr);display:flex;align-items:center;justify-content:center;font-size:1.35rem;color:var(--red2);margin-bottom:22px;transition:.26s}
+    .scard:hover .si{background:rgba(180,0,30,.18)}
+    .scard h3{font-family:var(--fh);font-weight:700;font-size:1.02rem;margin-bottom:10px;color:var(--white)}
+    .scard p{color:var(--muted);font-size:.88rem;line-height:1.62}
+    .stgs{display:flex;gap:6px;flex-wrap:wrap;margin-top:17px}
+    .stg{background:rgba(180,0,30,.09);color:var(--red2);font-size:.69rem;font-weight:700;padding:3px 10px;border-radius:100px;border:1px solid rgba(204,0,34,.17);letter-spacing:.04em}
+
+    /* instagram strip */
+    .igb{background:linear-gradient(135deg,#833ab4,#c13584 38%,#e1306c 68%,#fd1d1d);border-radius:var(--r);padding:26px 32px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-top:52px;box-shadow:0 10px 34px rgba(193,53,132,.22)}
+    .igbl{display:flex;align-items:center;gap:14px}
+    .igbl i{font-size:2.2rem;color:#fff}
+    .igbl h3{font-family:var(--fh);font-weight:800;color:#fff;font-size:1.1rem;margin-bottom:3px}
+    .igbl p{color:rgba(255,255,255,.82);font-size:.85rem;margin:0}
+    .igbtn{background:#fff;color:#c13584;font-family:var(--fh);font-weight:700;font-size:.84rem;padding:11px 24px;border-radius:100px;text-decoration:none;display:inline-flex;align-items:center;gap:7px;white-space:nowrap;transition:.2s;letter-spacing:.03em}
+    .igbtn:hover{background:rgba(255,255,255,.88);transform:scale(1.03)}
+
+    /* AVALIAÇÃO CTA */
+    .avc{margin-top:36px;background:linear-gradient(135deg,rgba(204,0,34,.12),rgba(123,0,32,.2));border:1px solid var(--bdr2);border-radius:var(--r);padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+    .avc-l i{font-size:2rem;color:#fbbc04;margin-bottom:4px}
+    .avc-l h3{font-family:var(--fh);font-weight:800;color:var(--white);font-size:1.05rem;margin-bottom:4px}
+    .avc-l p{color:var(--muted);font-size:.85rem;margin:0}
+    .avc-btn{background:#fbbc04;color:#111;font-family:var(--fh);font-weight:800;font-size:.85rem;padding:12px 26px;border-radius:100px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;white-space:nowrap;transition:.2s;letter-spacing:.03em}
+    .avc-btn:hover{background:#f9a800;transform:scale(1.03);box-shadow:0 6px 22px rgba(251,188,4,.3)}
+
+    /* ── CONTATO ── */
+    #contato{background:var(--bg2)}
+    .cog{display:grid;grid-template-columns:1fr 1.35fr;gap:58px;align-items:start}
+    .cii{display:flex;gap:16px;align-items:flex-start;margin-bottom:26px}
+    .cic{width:44px;height:44px;flex-shrink:0;border-radius:11px;background:rgba(180,0,30,.1);border:1px solid var(--bdr);display:flex;align-items:center;justify-content:center;color:var(--red2);font-size:1rem}
+    .cii h4{font-family:var(--fh);font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}
+    .cii p,.cii a{color:var(--txt);font-size:.92rem;text-decoration:none}
+    .cii a:hover{color:var(--red2)}
+    .sr{display:flex;gap:10px;margin-top:30px}
+    .sb{width:42px;height:42px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid var(--bdr);display:flex;align-items:center;justify-content:center;color:var(--muted);text-decoration:none;font-size:.95rem;transition:.2s}
+    .sb:hover{transform:translateY(-3px)}
+    .sb.ig:hover{background:rgba(193,53,132,.2);color:#c13584;border-color:rgba(193,53,132,.4)}
+    .sb.fb:hover{background:rgba(24,119,242,.2);color:#1877f2;border-color:rgba(24,119,242,.4)}
+    .sb.wa:hover{background:rgba(37,211,102,.2);color:#25d366;border-color:rgba(37,211,102,.4)}
+    .cf{background:var(--card);border:1px solid var(--bdr);border-radius:18px;padding:36px 30px}
+    .cft{font-family:var(--fh);font-size:1.2rem;font-weight:700;margin-bottom:24px}
+    .fr{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .fg{margin-bottom:14px}
+    .fg label{display:block;font-size:.76rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+    .fg input,.fg select,.fg textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:9px;padding:12px 14px;color:var(--txt);font-family:var(--fb);font-size:.9rem;outline:none;transition:.2s;-webkit-appearance:none}
+    .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:rgba(204,0,34,.42);background:rgba(180,0,30,.06);box-shadow:0 0 0 3px rgba(180,0,30,.09)}
+    .fg textarea{resize:vertical;min-height:100px}
+    .fg select option{background:var(--bg2)}
+    .fg input::placeholder,.fg textarea::placeholder{color:var(--muted)}
+    #fs{width:100%;justify-content:center;font-size:.92rem;padding:14px;margin-top:6px}
+    #ok{display:none;background:rgba(37,211,102,.08);border:1px solid rgba(37,211,102,.2);border-radius:9px;padding:13px;color:#25d366;text-align:center;margin-top:12px;font-weight:500}
+    @media(max-width:840px){.cog{grid-template-columns:1fr;gap:36px}.fr{grid-template-columns:1fr}}
+
+    /* ── FOOTER ── */
+    footer{background:var(--bg);border-top:1px solid var(--bdr);padding:56px 0 28px;position:relative;z-index:1}
+    .fi{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:44px;margin-bottom:44px}
+    .fb p{color:var(--muted);font-size:.88rem;margin-top:14px;max-width:270px;line-height:1.65}
+    .fc2 h5{font-family:var(--fh);font-size:.78rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:.1em;margin-bottom:18px}
+    .fc2 ul{list-style:none}
+    .fc2 ul li{margin-bottom:9px}
+    .fc2 ul li a{color:var(--muted);text-decoration:none;font-size:.88rem;transition:.18s}
+    .fc2 ul li a:hover{color:var(--red2)}
+    .fbot{border-top:1px solid var(--bdr);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+    .fbot p{color:var(--muted);font-size:.82rem}
+    .fbot span{color:var(--red2)}
+    @media(max-width:740px){.fi{grid-template-columns:1fr 1fr}.fb{grid-column:1/-1}}
+    @media(max-width:480px){.fi{grid-template-columns:1fr}}
+
+    /* ── BACK TOP ── */
+    #bt{position:fixed;bottom:108px;right:26px;z-index:996;width:42px;height:42px;border-radius:11px;background:var(--wine);color:#fff;font-size:1rem;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;opacity:0;transform:translateY(8px);transition:.28s;box-shadow:0 6px 20px rgba(123,0,32,.4)}
+    #bt.show{opacity:1;transform:none}
+    #bt:hover{background:var(--red)}
+
+    /* ── WA FLOAT ── */
+    #wa{position:fixed;bottom:26px;right:26px;z-index:997;display:flex;align-items:center}
+    .wal{background:#fff;color:#111;font-family:var(--fh);font-size:.78rem;font-weight:700;padding:9px 16px;border-radius:100px 0 0 100px;white-space:nowrap;box-shadow:-3px 3px 14px rgba(0,0,0,.2);opacity:0;transform:translateX(8px);transition:.28s;pointer-events:none}
+    #wa:hover .wal{opacity:1;transform:none;pointer-events:auto}
+    .wab{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#25d366,#128c7e);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.6rem;text-decoration:none;box-shadow:0 5px 22px rgba(37,211,102,.45);transition:.25s;position:relative}
+    .wab:hover{transform:scale(1.08)}
+    .wping{position:absolute;top:2px;right:2px;width:13px;height:13px;border-radius:50%;background:#ff3b3b;border:2px solid var(--bg);animation:wg 2s infinite}
+    @keyframes wg{0%{box-shadow:0 0 0 0 rgba(255,59,59,.6)}70%{box-shadow:0 0 0 7px rgba(255,59,59,0)}100%{box-shadow:0 0 0 0 rgba(255,59,59,0)}}
+
+    @media(max-width:760px){.nl,.navc{display:none}.hbg{display:block}.sec{padding:68px 0}}
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="c">
+    <a href="#home" class="logo">
+      <div class="logo-ic"><i class="fas fa-microchip"></i></div>
+      Kariri<span>Tech</span>
+    </a>
+    <ul class="nl">
+      <li><a href="#home" class="on">Home</a></li>
+      <li><a href="#sobre">Quem Somos</a></li>
+      <li><a href="#servicos">Serviços</a></li>
+      <li><a href="#contato">Contato</a></li>
+    </ul>
+    <div class="navc" style="display:flex;gap:10px;align-items:center">
+      <a href="avaliacao.html" class="btn" style="background:#fbbc04;color:#111;padding:9px 20px;font-size:.8rem"><i class="fas fa-star"></i> Avaliar</a>
+      <a href="#fale" class="btn bp" style="padding:9px 20px;font-size:.8rem"><i class="fas fa-comment-dots"></i> Fale Conosco</a>
+    </div>
+    <button class="hbg" id="hbg"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mm" id="mm">
+  <a href="#home">Home</a><a href="#sobre">Quem Somos</a>
+  <a href="#servicos">Serviços</a><a href="#contato">Contato</a>
+  <a href="avaliacao.html" class="btn" style="background:#fbbc04;color:#111;justify-content:center"><i class="fas fa-star"></i> Avaliar Atendimento</a>
+  <a href="#fale" class="btn bp" style="justify-content:center;margin-top:0"><i class="fas fa-comment-dots"></i> Fale Conosco</a>
+</div>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hbg-fx"></div>
+  <div class="cr">
+    <div class="crt" id="crt">
+      <div class="cs"><div class="c"><div class="sc">
+        <div class="badge"><i class="fas fa-bolt"></i> Tecnologia &amp; Inovação</div>
+        <h1>Soluções em TI para o <span>seu negócio</span> crescer</h1>
+        <p>A KaririTech oferece suporte técnico especializado, manutenção de equipamentos e soluções completas para empresas e pessoas físicas.</p>
+        <div class="sa"><a href="#servicos" class="btn bp"><i class="fas fa-rocket"></i> Ver Serviços</a><a href="https://wa.me/5588999999999" target="_blank" class="btn bo"><i class="fab fa-whatsapp"></i> WhatsApp</a></div>
+      </div></div></div>
+      <div class="cs"><div class="c"><div class="sc">
+        <div class="badge"><i class="fas fa-tools"></i> Assistência Técnica</div>
+        <h1>Manutenção e <span>Reparo</span> com Garantia</h1>
+        <p>Diagnóstico rápido, conserto de notebooks, desktops e impressoras. Equipe qualificada pronta para atender você no menor prazo.</p>
+        <div class="sa"><a href="https://wa.me/5588999999999" target="_blank" class="btn bp"><i class="fas fa-wrench"></i> Pedir Orçamento</a><a href="#contato" class="btn bo"><i class="fas fa-map-marker-alt"></i> Localização</a></div>
+      </div></div></div>
+      <div class="cs"><div class="c"><div class="sc">
+        <div class="badge"><i class="fas fa-wifi"></i> Redes &amp; Infraestrutura</div>
+        <h1>Redes <span>cabeadas</span> e Wi‑Fi corporativo</h1>
+        <p>Projetamos, instalamos e gerenciamos redes locais e sem fio para escritórios, lojas e residências com alta performance.</p>
+        <div class="sa"><a href="https://wa.me/5588999999999" target="_blank" class="btn bp"><i class="fas fa-network-wired"></i> Falar Agora</a><a href="#fale" class="btn bo"><i class="fas fa-envelope"></i> Orçamento</a></div>
+      </div></div></div>
+    </div>
+    <button class="carr prev" onclick="go(-1)"><i class="fas fa-chevron-left"></i></button>
+    <button class="carr nxt"  onclick="go(1)"><i class="fas fa-chevron-right"></i></button>
+    <div class="cctl" id="cdots"></div>
+  </div>
+  <div class="hfc">
+    <div class="fc"><div class="fl">Clientes atendidos</div><div class="fv">2.400+</div><div class="fs"><i class="fas fa-arrow-up"></i> Satisfação garantida</div></div>
+    <div class="fc"><div class="fl">Anos de experiência</div><div class="fv">10+</div><div class="fs"><i class="fas fa-star"></i> No mercado</div></div>
+    <div class="fc"><div class="fl">Tempo médio de reparo</div><div class="fv">24h</div><div class="fs"><i class="fas fa-bolt"></i> Agilidade total</div></div>
+  </div>
+</section>
+
+<!-- SOBRE -->
+<section id="sobre" class="sec">
+  <div class="c">
+    <div class="ag">
+      <div class="fu">
+        <div class="badge"><i class="fas fa-building"></i> Quem Somos</div>
+        <div class="bar"></div>
+        <h2 class="htitle">Tecnologia com <span>propósito</span> e dedicação</h2>
+        <p style="color:var(--muted);line-height:1.75;margin-bottom:16px">A <strong style="color:var(--white)">KaririTech Informática</strong> nasceu com a missão de democratizar o acesso à tecnologia na região do Cariri. Combinamos técnica aprofundada com atendimento humanizado.</p>
+        <p style="color:var(--muted);line-height:1.75;margin-bottom:32px">Nossa equipe é formada por profissionais certificados, apaixonados por tecnologia e comprometidos em entregar a melhor solução para cada cliente.</p>
+        <div class="ast fu">
+          <div class="as"><div class="n">10+</div><div class="l">Anos no Mercado</div></div>
+          <div class="as"><div class="n">2.4k</div><div class="l">Clientes</div></div>
+          <div class="as"><div class="n">98%</div><div class="l">Satisfação</div></div>
+        </div>
+      </div>
+      <div class="fu">
+        <div class="abox">
+          <div class="aig">
+            <div class="aic"><i class="fas fa-laptop-code"></i><p>Manutenção</p></div>
+            <div class="aic"><i class="fas fa-wifi"></i><p>Redes</p></div>
+            <div class="aic"><i class="fas fa-shield-alt"></i><p>Segurança</p></div>
+            <div class="aic"><i class="fas fa-cloud-upload-alt"></i><p>Backup</p></div>
+            <div class="aic"><i class="fas fa-print"></i><p>Impressoras</p></div>
+            <div class="aic"><i class="fas fa-headset"></i><p>Suporte</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVIÇOS -->
+<section id="servicos" class="sec">
+  <div class="c">
+    <div class="fu" style="margin-bottom:48px;max-width:540px">
+      <div class="badge"><i class="fas fa-cogs"></i> Serviços</div>
+      <div class="bar"></div>
+      <h2 class="htitle">O que a <span>KaririTech</span> oferece</h2>
+      <p class="hsub" style="margin-bottom:0">Soluções completas em TI para atender todas as suas necessidades.</p>
+    </div>
+    <div class="sg">
+      <div class="scard fu"><div class="si"><i class="fas fa-tools"></i></div><h3>Assistência Técnica</h3><p>Conserto de notebooks, desktops e periféricos com diagnóstico rápido e peças de qualidade.</p><div class="stgs"><span class="stg">Notebook</span><span class="stg">Desktop</span><span class="stg">Periféricos</span></div></div>
+      <div class="scard fu"><div class="si"><i class="fas fa-network-wired"></i></div><h3>Redes e Infraestrutura</h3><p>Projeto e instalação de redes cabeadas e Wi‑Fi para residências e empresas.</p><div class="stgs"><span class="stg">Wi-Fi</span><span class="stg">LAN</span><span class="stg">Fibra</span></div></div>
+      <div class="scard fu"><div class="si"><i class="fas fa-shield-virus"></i></div><h3>Segurança Digital</h3><p>Remoção de vírus, malware e ransomware. Antivírus corporativo e firewalls.</p><div class="stgs"><span class="stg">Antivírus</span><span class="stg">Firewall</span><span class="stg">VPN</span></div></div>
+      <div class="scard fu"><div class="si"><i class="fas fa-cloud"></i></div><h3>Backup &amp; Nuvem</h3><p>Backup automatizado local e em nuvem. Recuperação e migração cloud.</p><div class="stgs"><span class="stg">Google Drive</span><span class="stg">OneDrive</span><span class="stg">NAS</span></div></div>
+      <div class="scard fu"><div class="si"><i class="fas fa-print"></i></div><h3>Impressoras &amp; CFTV</h3><p>Manutenção de impressoras e sistemas de câmeras de segurança IP.</p><div class="stgs"><span class="stg">Impressora</span><span class="stg">CFTV</span><span class="stg">IP Cam</span></div></div>
+      <div class="scard fu"><div class="si"><i class="fas fa-desktop"></i></div><h3>Formatação &amp; Sistema</h3><p>Formatação, reinstalação de SO, otimização e recuperação de dados.</p><div class="stgs"><span class="stg">Windows</span><span class="stg">Linux</span><span class="stg">macOS</span></div></div>
+    </div>
+
+    <!-- Instagram -->
+    <div class="igb fu">
+      <div class="igbl"><i class="fab fa-instagram"></i><div><h3>Siga a KaririTech no Instagram!</h3><p>Dicas de tecnologia, promoções e novidades diárias.</p></div></div>
+      <a href="https://instagram.com/kariritech" target="_blank" class="igbtn"><i class="fab fa-instagram"></i> @kariritech</a>
+    </div>
+
+    <!-- Avaliação CTA -->
+    <div class="avc fu">
+      <div class="avc-l">
+        <i class="fab fa-google"></i>
+        <h3>Avalie nosso atendimento!</h3>
+        <p>Sua opinião nos ajuda a melhorar e ajuda outros clientes a nos encontrar no Google.</p>
+      </div>
+      <a href="avaliacao.html" class="avc-btn"><i class="fas fa-star"></i> Deixar Avaliação</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section id="contato" class="sec">
+  <div class="c">
+    <div class="fu" style="margin-bottom:48px;max-width:540px">
+      <div class="badge"><i class="fas fa-map-marker-alt"></i> Contato</div>
+      <div class="bar"></div>
+      <h2 class="htitle">Estamos <span>prontos</span> para te atender</h2>
+      <p class="hsub" style="margin-bottom:0">Fale por WhatsApp, e-mail ou redes sociais.</p>
+    </div>
+    <div class="cog">
+      <div class="fu">
+        <div class="cii"><div class="cic"><i class="fas fa-map-marker-alt"></i></div><div><h4>Endereço</h4><p>Rua Exemplo, 123 – Centro<br>Juazeiro do Norte – CE, 63010‑000</p></div></div>
+        <div class="cii"><div class="cic"><i class="fab fa-whatsapp"></i></div><div><h4>WhatsApp</h4><p><a href="https://wa.me/5588999999999" target="_blank">(88) 9 9999‑9999</a></p></div></div>
+        <div class="cii"><div class="cic"><i class="fas fa-envelope"></i></div><div><h4>E-mail</h4><p><a href="mailto:contato@kariritech.com.br">contato@kariritech.com.br</a></p></div></div>
+        <div class="cii"><div class="cic"><i class="fas fa-clock"></i></div><div><h4>Horário</h4><p>Seg–Sex: 08h–18h<br>Sábado: 08h–13h</p></div></div>
+        <div class="sr">
+          <a href="https://instagram.com/kariritech" target="_blank" class="sb ig"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="sb fb"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://wa.me/5588999999999" target="_blank" class="sb wa"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="cf fu" id="fale">
+        <div class="cft">💬 Fale Conosco</div>
+        <div class="fr">
+          <div class="fg"><label>Nome</label><input type="text" id="fn" placeholder="Seu nome completo"/></div>
+          <div class="fg"><label>WhatsApp</label><input type="tel" id="fp" placeholder="(88) 9 0000-0000"/></div>
+        </div>
+        <div class="fg"><label>E-mail</label><input type="email" id="fe" placeholder="seu@email.com"/></div>
+        <div class="fg"><label>Serviço de Interesse</label>
+          <select id="fv"><option value="" disabled selected>Selecione…</option><option>Assistência Técnica</option><option>Redes e Infraestrutura</option><option>Segurança Digital</option><option>Backup &amp; Nuvem</option><option>Impressoras &amp; CFTV</option><option>Formatação &amp; Sistema</option><option>Outro</option></select>
+        </div>
+        <div class="fg"><label>Mensagem</label><textarea id="fm" placeholder="Descreva o que precisa…"></textarea></div>
+        <button class="btn bp" id="fs" onclick="send()" style="width:100%;justify-content:center"><i class="fas fa-paper-plane"></i> Enviar Mensagem</button>
+        <div id="ok">✅ Mensagem enviada! Em breve entraremos em contato.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="c">
+    <div class="fi">
+      <div class="fb">
+        <a href="#home" class="logo"><div class="logo-ic"><i class="fas fa-microchip"></i></div>Kariri<span>Tech</span></a>
+        <p>Tecnologia de confiança para o seu dia a dia. Suporte especializado na região do Cariri há mais de 10 anos.</p>
+      </div>
+      <div class="fc2"><h5>Links Rápidos</h5><ul><li><a href="#home">Home</a></li><li><a href="#sobre">Quem Somos</a></li><li><a href="#servicos">Serviços</a></li><li><a href="#contato">Contato</a></li><li><a href="avaliacao.html">⭐ Avaliação</a></li></ul></div>
+      <div class="fc2"><h5>Serviços</h5><ul><li><a href="#servicos">Assistência Técnica</a></li><li><a href="#servicos">Redes Wi-Fi</a></li><li><a href="#servicos">Segurança Digital</a></li><li><a href="#servicos">Backup &amp; Nuvem</a></li><li><a href="#servicos">Formatação</a></li></ul></div>
+    </div>
+    <div class="fbot">
+      <p>© 2025 <span>KaririTech Informática</span>. Todos os direitos reservados.</p>
+      <p>Feito com <span>♥</span> no Cariri</p>
+    </div>
+  </div>
+</footer>
+
+<!-- WA FLOAT -->
+<div id="wa">
+  <div class="wal">Fale pelo WhatsApp!</div>
+  <a href="https://wa.me/5588999999999" target="_blank" class="wab"><i class="fab fa-whatsapp"></i><span class="wping"></span></a>
+</div>
+<!-- BACK TOP -->
+<button id="bt" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-chevron-up"></i></button>
+
+<script>
+// Carousel
+var cur=0,slides=document.querySelectorAll('.cs'),tr=document.getElementById('crt'),dw=document.getElementById('cdots'),tm;
+slides.forEach(function(_,i){var d=document.createElement('button');d.className='cdot'+(i===0?' on':'');d.onclick=function(){gt(i)};dw.appendChild(d);});
+function gt(n){cur=(n+slides.length)%slides.length;tr.style.transform='translateX(-'+cur*100+'%)';dw.querySelectorAll('.cdot').forEach(function(d,i){d.classList.toggle('on',i===cur)});clearInterval(tm);tm=setInterval(function(){gt(cur+1)},5200);}
+function go(d){gt(cur+d);}
+tm=setInterval(function(){gt(cur+1)},5200);
+
+// Nav active + back-top
+var secs=document.querySelectorAll('section[id]'),nas=document.querySelectorAll('.nl a');
+window.addEventListener('scroll',function(){
+  var sp=window.scrollY+80;
+  secs.forEach(function(s){if(sp>=s.offsetTop&&sp<s.offsetTop+s.offsetHeight)nas.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+s.id);});});
+  document.getElementById('bt').classList.toggle('show',window.scrollY>280);
+});
+
+// Hamburger
+var hbg=document.getElementById('hbg'),mm=document.getElementById('mm');
+hbg.addEventListener('click',function(){
+  mm.classList.toggle('open');
+  var sp=hbg.querySelectorAll('span');
+  if(mm.classList.contains('open')){sp[0].style.cssText='transform:rotate(45deg) translate(5px,5px)';sp[1].style.cssText='opacity:0';sp[2].style.cssText='transform:rotate(-45deg) translate(5px,-5px)';}
+  else{sp.forEach(function(s){s.style.cssText=''});}
+});
+mm.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){mm.classList.remove('open');hbg.querySelectorAll('span').forEach(function(s){s.style.cssText='';});});});
+
+// Fade in
+var obs=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting)x.target.classList.add('vis');});},{threshold:.1});
+document.querySelectorAll('.fu').forEach(function(el){obs.observe(el);});
+
+// Form
+function send(){
+  var n=document.getElementById('fn').value.trim(),e=document.getElementById('fe').value.trim(),m=document.getElementById('fm').value.trim();
+  if(!n||!e||!m){alert('Preencha nome, e-mail e mensagem.');return;}
+  var b=document.getElementById('fs');b.innerHTML='<i class="fas fa-spinner fa-spin"></i> Enviando…';b.disabled=true;
+  setTimeout(function(){document.getElementById('ok').style.display='block';b.style.display='none';['fn','fp','fe','fv','fm'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});},1200);
+}
+// Phone mask
+document.getElementById('fp').addEventListener('input',function(){
+  var v=this.value.replace(/\D/g,'').substring(0,11);
+  if(v.length>7)v=v.replace(/^(\d{2})(\d{1})(\d{4})(\d{0,4})$/,'($1) $2 $3-$4');
+  else if(v.length>2)v=v.replace(/^(\d{2})(\d+)$/,'($1) $2');
+  this.value=v;
+});
+</script>
+</body>
+</html>
